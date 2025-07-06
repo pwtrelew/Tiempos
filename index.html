@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reunión V y MC</title>
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- html2canvas CDN for converting HTML to image -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        /* Custom styles for Poppins font and general aesthetics */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f8; /* Light gray background, similar to jw.org subtle background */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to start for better top spacing */
+            min-height: 100vh;
+            padding: 2rem;
+            padding-top: 10rem; /* Ensures content clears fixed elements at the top */
+            padding-bottom: 2rem;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 2.5rem;
+            border-radius: 0.75rem; /* Slightly less rounded corners for a cleaner look */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Softer, more subtle shadow */
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid #e2e8f0; /* Subtle border, similar to jw.org element separation */
+        }
+        .section-title {
+            font-size: 1.1rem; /* Adjusted smaller font size for subtitles on desktop */
+            font-weight: 700;
+            color: #1A202C; /* Darker text for headings */
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        .input-group label {
+            display: inline-block; /* Make label inline with the name input */
+            margin-bottom: 0; /* Remove default block margin */
+            font-weight: 600;
+            color: #2D3748; /* Slightly lighter dark text for labels */
+            font-size: 1.1rem;
+            margin-right: 0.5rem; /* Space after the label */
+            vertical-align: middle; /* Align vertically with input */
+        }
+        /* Styles for inputs within a pair (now always stacked) */
+        .input-pair {
+            display: block; /* Container for name and duration inputs */
+            margin-bottom: 0.75rem; /* Space between pairs */
+        }
+        .input-pair input[type="text"] {
+            width: 100%; /* Make inputs take full width */
+            padding: 0.8rem 1rem;
+            border: 1px solid #CBD5E0; /* Light gray border */
+            border-radius: 0.5rem; /* Slightly less rounded for inputs */
+            font-size: 1rem;
+            color: #4A5568;
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            outline: none;
+            margin-bottom: 0.75rem; /* Space between the two inputs */
+        }
+        .input-pair input[type="text"]:last-child {
+            margin-bottom: 0; /* No margin after the last input in the pair */
+        }
+        .input-pair input[type="text"]:focus {
+            border-color: #1D60A1; /* jw.org-like blue on focus */
+            box-shadow: 0 0 0 2px rgba(29, 96, 161, 0.2); /* Subtle blue shadow on focus */
+        }
+
+        /* Name input (inline with label) */
+        .name-input {
+            display: inline-block; /* Keep it on the same line as the label */
+            vertical-align: middle; /* Align vertically with label */
+            width: calc(100% - 50px); /* Adjust width to make space for label and its margin */
+            margin-bottom: 0; /* Ensure no extra margin */
+        }
+
+        /* Duration input (always on a new line, full width) */
+        .duration-input-block {
+            display: block; /* Force to new line */
+            width: 100%; /* Take full width */
+            margin-top: 0.75rem; /* Space above the duration input */
+        }
+
+        h1 {
+            /* Reverted styles for the blue box effect */
+            background-color: transparent; /* No background color */
+            color: #1A202C; /* Dark text color */
+            padding: 0; /* No padding */
+            border-radius: 0; /* No border radius */
+            margin-bottom: 6rem; /* Keep increased margin-bottom for h1 */
+            text-align: center;
+            font-size: 4.5rem; /* Increased font size for h1 on desktop */
+            font-weight: 700;
+        }
+
+        /* Specific margin adjustment for Presidente and Ayudante input groups */
+        #presidente-group { /* Added ID for specific targeting */
+            margin-top: 2rem; /* Increased margin-top for Presidente */
+            margin-bottom: 0.5rem; /* Reduced margin-bottom for Presidente */
+        }
+        #ayudante-group { /* Added ID for specific targeting */
+            margin-top: 0.5rem; /* Reduced margin-top for Ayudante */
+            margin-bottom: 1.5rem; /* Keep original margin-bottom for Ayudante */
+        }
+
+
+        /* Stopwatch specific styles */
+        .stopwatch-container {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #ffffff; /* White background */
+            padding: 0.8rem;
+            border-radius: 0.75rem; /* Rounded corners */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+            z-index: 1000;
+            width: fit-content;
+            border: 1px solid #e2e8f0; /* Subtle border */
+        }
+        .stopwatch-display-wrapper { /* Wrapper for display and copy button */
+            display: flex;
+            align-items: center;
+            gap: 0.5rem; /* Space between time and copy button */
+            margin-bottom: 0.75rem;
+            position: relative; /* For copy message positioning */
+        }
+        .stopwatch-display {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1A202C; /* Dark text */
+            min-width: 100px; /* Adjusted to fit MM:SS */
+            text-align: center;
+        }
+        .stopwatch-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .stopwatch-buttons button {
+            padding: 0.5rem 0.8rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            display: flex; /* Added for icon centering */
+            justify-content: center; /* Added for icon centering */
+            align-items: center; /* Added for icon centering */
+        }
+        .stopwatch-buttons button svg { /* Styles for SVG icons within buttons */
+            width: 24px; /* Icon size */
+            height: 24px;
+            fill: currentColor; /* Inherit button text color */
+        }
+        .stopwatch-buttons button:hover {
+            transform: translateY(-1px);
+        }
+        .stopwatch-buttons button:active {
+            transform: translateY(0);
+        }
+        .stopwatch-buttons .start-btn {
+            background-color: #1D60A1; /* jw.org blue */
+            color: white;
+        }
+        .stopwatch-buttons .start-btn:hover {
+            background-color: #164C81; /* Darker blue on hover */
+        }
+        .stopwatch-buttons .stop-btn {
+            background-color: #DC2626; /* Red for stop */
+            color: white;
+        }
+        .stopwatch-buttons .stop-btn:hover {
+            background-color: #B91C1C; /* Darker red on hover */
+        }
+        .stopwatch-buttons .reset-btn {
+            background-color: #6B7280; /* Gray for reset */
+            color: white;
+        }
+        .stopwatch-buttons .reset-btn:hover {
+            background-color: #4B5563; /* Darker gray on hover */
+        }
+
+        /* Stopwatch Copy Button */
+        .copy-time-button {
+            background-color: #9CA3AF; /* Lighter gray for copy button */
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            width: 36px; /* Size for copy icon button */
+            height: 36px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+            opacity: 0; /* Hidden by default */
+            visibility: hidden; /* Hidden by default */
+        }
+        .copy-time-button.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .copy-time-button:hover {
+            background-color: #6B7280;
+            transform: translateY(-1px);
+        }
+        .copy-time-button:active {
+            transform: translateY(0);
+        }
+        .copy-time-button svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* Copy confirmation message */
+        .copy-confirmation-message {
+            position: absolute;
+            top: -30px; /* Position above the button */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4A5568;
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 0.5rem;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            pointer-events: none; /* Allow clicks to pass through */
+        }
+        .copy-confirmation-message.show {
+            opacity: 1;
+        }
+
+        /* Floating Counter Container (Resettable) */
+        .floating-counter-container {
+            position: fixed;
+            top: 2rem; /* Remains at top */
+            right: 2rem; /* Remains on right */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #ffffff; /* White background */
+            padding: 0.8rem; /* Added padding for consistency */
+            border-radius: 0.75rem; /* Rounded corners */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+            z-index: 1000;
+            width: fit-content;
+            border: 1px solid #e2e8f0; /* Subtle border */
+        }
+        .floating-counter-display {
+            background-color: #1D60A1; /* jw.org blue for display */
+            color: white;
+            padding: 0.8rem 1.2rem; /* Increased padding */
+            border-radius: 0.5rem; /* Slightly less rounded */
+            font-weight: 600;
+            font-size: 2.2rem; /* Increased font size significantly */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease-in-out; /* For reset feedback */
+            margin-bottom: 0.5rem; /* Space below display */
+            min-width: 80px; /* Ensure it's wide enough for larger numbers */
+            text-align: center;
+        }
+        .floating-counter-display.reset-feedback {
+            background-color: #DC2626; /* Red for reset feedback */
+        }
+        .floating-counter-button {
+            background-color: #1D60A1; /* jw.org blue */
+            color: white; /* For icon */
+            border: none;
+            border-radius: 50%; /* Round shape */
+            width: 60px; /* Original size */
+            height: 60px; /* Original size */
+            font-size: 0; /* Hide any potential text */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, border 0.2s ease-in-out;
+            margin-top: 0.5rem; /* Space below display/reset button */
+            
+            /* Light effect for the button - applied to the base color */
+            background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 70%), linear-gradient(to bottom right, #1D60A1, #3B82F6); /* Base color with gradient */
+            position: relative; /* Needed for positioning the inner plus */
+            overflow: hidden; /* Ensure inner plus doesn't spill out */
+        }
+        .floating-counter-button::before,
+        .floating-counter-button::after { /* Plus sign bars */
+            content: '';
+            position: absolute;
+            background-color: white;
+            border-radius: 3px; /* Rounded ends for the plus bars */
+            z-index: 1;
+        }
+        .floating-counter-button::before { /* Horizontal bar */
+            width: 24px; /* Size of the plus */
+            height: 6px; /* Thickness of the bar */
+        }
+        .floating-counter-button::after { /* Vertical bar */
+            width: 6px; /* Thickness of the bar */
+            height: 24px; /* Size of the plus */
+        }
+        .floating-counter-button:hover {
+            background-color: #164C81; /* Darker blue on hover */
+            transform: translateY(-2px);
+        }
+        .floating-counter-button:active {
+            background-color: #113A60; /* Even darker blue when long pressed */
+            border: 2px solid #60A5FA; /* Lighter border for feedback */
+            transform: translateY(0);
+        }
+        .floating-counter-button.long-press-active {
+            background-color: #113A60; /* Even darker blue when long pressed */
+            border: 2px solid #60A5FA; /* Lighter border for feedback */
+        }
+
+        /* New Total Comments Counter Container */
+        .total-comments-container {
+            position: fixed;
+            top: 2rem; /* Aligned with other floating elements */
+            left: 2rem; /* Top-left corner */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 0.5rem 0.8rem; /* Reduced padding */
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            z-index: 1000;
+            width: fit-content;
+            border: 1px solid #e2e8f0; /* Subtle border */
+        }
+        .total-comments-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #4A5568; /* Medium gray text */
+            margin-bottom: 0.2rem; /* Reduced margin */
+        }
+        .total-comments-display {
+            font-size: 1.5rem; /* Slightly reduced font size for number */
+            font-weight: 700;
+            color: #1D60A1; /* jw.org blue for distinction */
+            min-width: 35px; /* Reduced min-width to allow shrinking */
+            text-align: center;
+        }
+
+
+        /* Generate Report Button */
+        .generate-report-button {
+            margin-top: 2rem;
+            width: 100%;
+            background-color: #1D60A1; /* jw.org blue */
+            color: white;
+            font-weight: 600;
+            padding: 0.8rem 1.2rem;
+            border-radius: 0.5rem; /* Slightly less rounded */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+        .generate-report-button:hover {
+            background-color: #164C81; /* Darker blue on hover */
+            transform: translateY(-1px);
+        }
+        .generate-report-button:active {
+            transform: translateY(0);
+        }
+
+        /* Reset Data Button */
+        .reset-data-button {
+            margin-top: 1rem; /* Space between this and the generate report button */
+            width: 100%;
+            background-color: #DC2626; /* Red for reset */
+            color: white;
+            font-weight: 600;
+            padding: 0.8rem 1.2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+        .reset-data-button:hover {
+            background-color: #B91C1C; /* Darker red on hover */
+            transform: translateY(-1px);
+        }
+        .reset-data-button:active {
+            transform: translateY(0);
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 2000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: #ffffff;
+            margin: auto;
+            padding: 2.5rem;
+            border-radius: 0.75rem; /* Rounded corners */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            max-width: 700px;
+            width: 90%;
+            position: relative;
+            animation: fadeIn 0.3s ease-out;
+            display: flex; /* Use flexbox for content arrangement */
+            flex-direction: column; /* Stack children vertically */
+        }
+        .modal-close-button {
+            color: #6B7280; /* Gray close button */
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-close-button:hover,
+        .modal-close-button:focus {
+            color: #4B5563;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1A202C; /* Dark text */
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .modal-body {
+            font-size: 1rem;
+            color: #4A5568;
+            line-height: 1.6;
+            white-space: pre-wrap; /* Preserve whitespace and line breaks */
+            max-height: 70vh; /* Max height for scrollable content */
+            overflow-y: auto; /* Enable scrolling for long reports */
+            padding-right: 10px; /* Space for scrollbar */
+            flex-grow: 1; /* Allow body to take available space */
+            margin-bottom: 1.5rem; /* Space before the download button */
+        }
+        .modal-body strong {
+            color: #2D3748; /* Slightly lighter dark text for strong tags */
+        }
+
+        /* Download Button in Modal */
+        .modal-download-button {
+            background-color: #1D60A1; /* jw.org blue */
+            color: white;
+            font-weight: 600;
+            padding: 0.8rem 1.2rem;
+            border-radius: 0.5rem; /* Slightly less rounded */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            width: 100%; /* Full width within modal */
+            margin-top: 1rem; /* Space above the button */
+        }
+        .modal-download-button:hover {
+            background-color: #164C81; /* Darker blue on hover */
+            transform: translateY(-1px);
+        }
+        .modal-download-button:active {
+            transform: translateY(0);
+        }
+
+        /* Confirmation Modal Specific Styles */
+        #confirmation-modal .modal-content {
+            max-width: 400px; /* Smaller width for confirmation */
+            text-align: center;
+            padding: 2rem;
+        }
+        #confirmation-modal .modal-message {
+            font-size: 1.1rem;
+            color: #1A202C;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        #confirmation-modal .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem; /* Space between Yes/No buttons */
+        }
+        #confirmation-modal .modal-buttons button {
+            padding: 0.6rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+        }
+        #confirmation-modal .modal-buttons .confirm-yes {
+            background-color: #DC2626; /* Red for Yes (delete) */
+            color: white;
+        }
+        #confirmation-modal .modal-buttons .confirm-yes:hover {
+            background-color: #B91C1C;
+            transform: translateY(-1px);
+        }
+        #confirmation-modal .modal-buttons .confirm-no {
+            background-color: #6B7280; /* Gray for No */
+            color: white;
+        }
+        #confirmation-modal .modal-buttons .confirm-no:hover {
+            background-color: #4B5563;
+            transform: translateY(-1px);
+        }
+
+
+        /* Keyframe animation for modal */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 640px) {
+            body {
+                padding-top: 8rem;
+                padding-bottom: 2rem;
+            }
+            .container {
+                /* Adjusted for mobile: reduced padding and margin for more content space */
+                padding: 0.75rem; /* Reduced from 1rem */
+                margin: 0.25rem; /* Reduced from 0.5rem */
+            }
+            h1 {
+                font-size: 3.5rem; /* Adjusted h1 for mobile to be larger */
+                padding: 0; /* Removed padding for mobile h1 */
+                margin-bottom: 4.5rem; /* Adjusted margin-bottom for mobile h1 */
+            }
+            .section-title {
+                font-size: 1rem; /* Adjusted smaller font size for subtitles on mobile */
+            }
+            .input-group label {
+                font-size: 1rem;
+                margin-right: 0.3rem; /* Smaller margin for mobile */
+            }
+            .name-input {
+                width: calc(100% - 40px); /* Adjust width for mobile label */
+            }
+            .duration-input-block {
+                margin-top: 0.5rem; /* Smaller margin for mobile */
+            }
+            .stopwatch-container {
+                top: 1rem;
+                transform: translateX(-50%) scale(0.9);
+            }
+            .stopwatch-display-wrapper {
+                gap: 0.3rem; /* Smaller gap for mobile */
+            }
+            .stopwatch-display {
+                font-size: 1.5rem;
+                min-width: 80px;
+            }
+            .stopwatch-buttons button {
+                padding: 0.4rem 0.7rem;
+                font-size: 0.8rem;
+            }
+            .copy-time-button {
+                width: 30px;
+                height: 30px;
+            }
+            .copy-time-button svg {
+                width: 18px;
+                height: 18px;
+            }
+            .copy-confirmation-message {
+                top: -25px;
+                font-size: 0.7rem;
+            }
+            .floating-counter-container {
+                top: 1rem; /* Adjusted for mobile */
+                right: 1rem;
+                padding: 0.6rem; /* Adjusted padding for mobile */
+            }
+            .floating-counter-button {
+                width: 60px; /* Reverted to original size for mobile */
+                height: 60px; /* Reverted to original size for mobile */
+            }
+            .floating-counter-button::before,
+            .floating-counter-button::after { /* Plus sign bars for mobile */
+                width: 20px; /* Smaller plus for mobile */
+                height: 5px; /* Thinner bars for mobile */
+            }
+            .floating-counter-button::after {
+                width: 5px;
+                height: 20px;
+            }
+            .floating-counter-display {
+                padding: 0.4rem 0.8rem; /* Adjusted padding for mobile */
+                font-size: 1.8rem; /* Adjusted font size for mobile */
+                min-width: 70px;
+            }
+            .total-comments-container {
+                top: 1rem; /* Adjusted for mobile */
+                left: 1rem;
+                padding: 0.4rem 0.6rem; /* Further reduced padding for mobile */
+            }
+            .total-comments-label {
+                font-size: 0.8rem;
+                margin-bottom: 0.1rem; /* Further reduced margin */
+            }
+            .total-comments-display {
+                font-size: 1.2rem; /* Further reduced font size for mobile */
+                min-width: 30px; /* Further reduced min-width for mobile */
+            }
+            .generate-report-button, .reset-data-button {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            .modal-content {
+                padding: 1.5rem;
+                width: 95%;
+            }
+            .modal-title {
+                font-size: 1.5rem;
+            }
+            .modal-body {
+                font-size: 0.9rem;
+            }
+            .modal-download-button {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            #confirmation-modal .modal-content {
+                padding: 1.5rem;
+            }
+            #confirmation-modal .modal-message {
+                font-size: 1rem;
+            }
+            #confirmation-modal .modal-buttons button {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Stopwatch Container -->
+    <div class="stopwatch-container">
+        <div class="stopwatch-display-wrapper">
+            <div id="stopwatch-display" class="stopwatch-display">00:00</div>
+            <button id="copy-time-button" class="copy-time-button" aria-label="Copiar tiempo">
+                <!-- Copy Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M16 1H4C2.89543 1 2 1.89543 2 3V17H4V3H16V1ZM15 5H8C6.89543 5 6 5.89543 6 7V21C6 22.1046 6.89543 23 8 23H20C21.1046 23 22 22.1046 22 21V9L15 5ZM20 21H8V7H14V10H20V21Z"/>
+                </svg>
+            </button>
+            <div id="copy-confirmation-message" class="copy-confirmation-message">¡Copiado!</div>
+        </div>
+        <div class="stopwatch-buttons">
+            <button id="start-btn" class="start-btn" aria-label="Iniciar cronómetro">
+                <!-- Play Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M8 5V19L19 12L8 5Z"/>
+                </svg>
+            </button>
+            <button id="stop-btn" class="stop-btn" aria-label="Detener cronómetro">
+                <!-- Pause Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M6 19H10V5H6V19ZM14 5V19H18V5H14Z"/>
+                </svg>
+            </button>
+            <button id="reset-btn" class="reset-btn" aria-label="Reiniciar cronómetro">
+                <!-- Reset Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 4V1L8 5L12 9V6C15.31 6 18 8.69 18 12C18 13.56 17.43 14.96 16.5 16L18.15 17.65C19.34 16.27 20 14.28 20 12C20 7.58 16.42 4 12 4ZM6 12C6 10.44 6.57 9.04 7.5 8L5.85 6.35C4.66 7.73 4 9.72 4 12C4 16.42 7.58 20 12 20V23L16 19L12 15V18C8.69 18 6 15.31 6 12Z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Floating Counter Container (Resettable) -->
+    <div class="floating-counter-container">
+        <div id="floating-counter-display" class="floating-counter-display">0</div>
+        <button id="floating-counter-button" class="floating-counter-button" aria-label="Incrementar contador">
+            <!-- Plus icon is created using ::before and ::after pseudo-elements in CSS -->
+        </button>
+    </div>
+
+    <!-- New Total Comments Counter Container (Persistent) -->
+    <div class="total-comments-container">
+        <div class="total-comments-label">Total</div>
+        <div id="total-comments-display" class="total-comments-display">0</div>
+    </div>
+
+    <div class="container">
+        <h1><strong>REUNIÓN V Y MC</strong></h1>
+
+        <!-- New fields for Presidente and Ayudante -->
+        <div class="input-group" id="presidente-group">
+            <label for="presidente-nombre">Presidente:</label>
+            <input type="text" id="presidente-nombre" name="presidente-nombre" class="name-input" placeholder="Nombre del Presidente">
+        </div>
+
+        <div class="input-group" id="ayudante-group">
+            <label for="ayudante-nombre">Ayudante:</label>
+            <input type="text" id="ayudante-nombre" name="ayudante-nombre" class="name-input" placeholder="Nombre del Ayudante">
+        </div>
+
+        <h3 class="section-title">TESOROS DE LA BIBLIA</h3>
+
+        <div class="input-group">
+            <label for="tema-biblia-nombre">1.</label>
+            <input type="text" id="tema-biblia-nombre" name="tema-biblia-nombre" class="name-input" placeholder="A cargo de">
+            <input type="text" id="tema-biblia-duracion" name="tema-biblia-duracion" class="duration-input-block duration-input-short" placeholder="Duración">
+        </div>
+
+        <div class="input-group">
+            <label for="perlas-nombre">2.</label>
+            <input type="text" id="perlas-nombre" name="perlas-nombre" class="name-input" placeholder="A cargo de">
+            <input type="text" id="perlas-duracion" name="perlas-duracion" class="duration-input-block duration-input-very-short" placeholder="Duración">
+        </div>
+
+        <div class="input-group">
+            <label for="lectura-biblia-nombre">3.</label>
+            <input type="text" id="lectura-biblia-nombre" name="lectura-biblia-nombre" class="name-input" placeholder="A cargo de">
+            <input type="text" id="lectura-biblia-duracion" name="lectura-biblia-duracion" class="duration-input-block duration-input-long" placeholder="Duración">
+        </div>
+
+        <h3 class="section-title">SEAMOS MEJORES MAESTROS</h3>
+
+        <div class="input-group">
+            <label for="primera-conversacion-nombre">4.</label>
+            <input type="text" id="primera-conversacion-nombre" name="primera-conversacion-nombre" class="name-input" placeholder="A cargo de">
+            <input type="text" id="primera-conversacion-duracion" name="primera-conversacion-duracion" class="duration-input-block duration-input-short" placeholder="Duración">
+        </div>
+
+        <div class="input-group">
+            <label for="revisita-nombre">5.</label>
+            <input type="text" id="revisita-nombre" name="revisita-nombre" class="name-input" placeholder="A cargo de">
+            <input type="text" id="revisita-duracion" name="revisita-duracion" class="duration-input-block duration-input-short" placeholder="Duración">
+        </div>
+
+        <div class="input-group">
+            <label for="curso-biblico-nombre">6.</label>
+            <input type="text" id="curso-biblico-nombre" name="curso-biblico-nombre" class="name-input" placeholder="A cargo de">
+            <input type="text" id="curso-biblico-duracion" name="curso-biblico-duracion" class="duration-input-block duration-input-long" placeholder="Duración">
+        </div>
+
+        <h3 class="section-title">NUESTRA VIDA CRISTIANA</h3>
+
+        <div class="input-group">
+            <label for="discurso-nombre">7.</label>
+            <input type="text" id="discurso-nombre" name="discurso-nombre" class="name-input" placeholder="A cargo de">
+            <input type="text" id="discurso-duracion" name="discurso-duracion" class="duration-input-block duration-input-long" placeholder="Duración">
+        </div>
+
+        <div class="input-group">
+            <label for="necesidades-nombre">8.</label>
+            <input type="text" id="necesidades-nombre" name="necesidades-nombre" class="name-input" placeholder="A cargo de">
+            <input type="text" id="necesidades-duracion" name="necesidades-duracion" class="duration-input-block duration-input-very-long" placeholder="Duración">
+        </div>
+
+        <div class="input-group">
+            <label for="estudio-biblia-nombre">9.</label>
+            <input type="text" id="estudio-biblia-nombre" name="estudio-biblia-nombre" class="name-input" placeholder="A cargo de">
+            <input type="text" id="estudio-biblia-duracion" name="estudio-biblia-duracion" class="duration-input-block duration-input-very-long" placeholder="Duración">
+        </div>
+
+        <button id="generate-report-button" class="generate-report-button">Generar Informe</button>
+        <button id="reset-data-button" class="reset-data-button" aria-label="Resetear todos los datos ingresados">Resetear datos</button>
+    </div>
+
+    <!-- Report Modal -->
+    <div id="report-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button" aria-label="Cerrar">&times;</span>
+            <h2 class="modal-title">Informe de la Reunión</h2>
+            <div id="report-modal-body" class="modal-body">
+                <!-- Report content will be injected here -->
+            </div>
+            <button id="download-report-button" class="modal-download-button" aria-label="Descargar informe como PNG">Descargar como PNG</button>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal for Reset Data -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-message">¿Estás seguro de eliminar todos los datos ingresados?</div>
+            <div class="modal-buttons">
+                <button id="confirm-yes-button" class="confirm-yes">Sí</button>
+                <button id="confirm-no-button" class="confirm-no">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Stopwatch Logic ---
+            const stopwatchDisplay = document.getElementById('stopwatch-display');
+            const startBtn = document.getElementById('start-btn');
+            const stopBtn = document.getElementById('stop-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const copyTimeButton = document.getElementById('copy-time-button');
+            const copyConfirmationMessage = document.getElementById('copy-confirmation-message');
+
+            let timer;
+            let isRunning = false;
+            let startTime;
+            let elapsedTime = 0; // Stores elapsed time in milliseconds
+
+            /**
+             * Formats a given time in milliseconds into MM:SS format.
+             * @param {number} ms - Time in milliseconds.
+             * @returns {string} Formatted time string (MM:SS).
+             */
+            function formatTime(ms) {
+                const totalSeconds = Math.floor(ms / 1000);
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+
+                const formattedMinutes = String(minutes).padStart(2, '0');
+                const formattedSeconds = String(seconds).padStart(2, '0');
+
+                return `${formattedMinutes}:${formattedSeconds}`;
+            }
+
+            /**
+             * Updates the stopwatch display with the current elapsed time.
+             */
+            function updateStopwatchDisplay() {
+                const currentTime = Date.now();
+                elapsedTime = currentTime - startTime;
+                stopwatchDisplay.textContent = formatTime(elapsedTime);
+            }
+
+            /**
+             * Starts the stopwatch.
+             */
+            function startStopwatch() {
+                if (!isRunning) {
+                    isRunning = true;
+                    startTime = Date.now() - elapsedTime; // Adjust startTime to account for previously elapsed time
+                    timer = setInterval(updateStopwatchDisplay, 1000); // Update every second
+                    startBtn.disabled = true;
+                    stopBtn.disabled = false;
+                    resetBtn.disabled = false;
+                    copyTimeButton.classList.remove('visible'); // Hide copy button when running
+                }
+            }
+
+            /**
+             * Stops the stopwatch.
+             */
+            function stopStopwatch() {
+                if (isRunning) {
+                    isRunning = false;
+                    clearInterval(timer);
+                    startBtn.disabled = false;
+                    stopBtn.disabled = true;
+                    copyTimeButton.classList.add('visible'); // Show copy button when stopped
+                }
+            }
+
+            /**
+             * Resets the stopwatch to 00:00.
+             */
+            function resetStopwatch() {
+                stopStopwatch(); // Stop if running
+                elapsedTime = 0;
+                stopwatchDisplay.textContent = '00:00';
+                startBtn.disabled = false;
+                resetBtn.disabled = true;
+                copyTimeButton.classList.remove('visible'); // Hide copy button on reset
+            }
+
+            // Initialize button states
+            stopBtn.disabled = true;
+            resetBtn.disabled = true;
+
+            // Event Listeners for Stopwatch
+            startBtn.addEventListener('click', startStopwatch);
+            stopBtn.addEventListener('click', stopStopwatch);
+            resetBtn.addEventListener('click', resetStopwatch);
+
+            /**
+             * Copies the current stopwatch time to the clipboard.
+             */
+            copyTimeButton.addEventListener('click', () => {
+                const timeToCopy = stopwatchDisplay.textContent;
+                // Using document.execCommand('copy') as navigator.clipboard.writeText() might not work in iframes
+                const tempInput = document.createElement('textarea');
+                tempInput.value = timeToCopy;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                try {
+                    document.execCommand('copy');
+                    copyConfirmationMessage.classList.add('show');
+                    setTimeout(() => {
+                        copyConfirmationMessage.classList.remove('show');
+                    }, 1500); // Hide message after 1.5 seconds
+                } catch (err) {
+                    console.error('Failed to copy text: ', err);
+                }
+                document.body.removeChild(tempInput);
+            });
+
+            // --- Floating Counter Logic (Resettable) ---
+            const floatingCounterDisplay = document.getElementById('floating-counter-display');
+            const floatingCounterButton = document.getElementById('floating-counter-button');
+            let counterValue = 0; // This counter resets
+            let longPressTimer;
+            const LONG_PRESS_THRESHOLD = 500; // milliseconds
+
+            // --- New Total Comments Counter Logic (Persistent) ---
+            const totalCommentsDisplay = document.getElementById('total-comments-display');
+            // Load total comments from localStorage or initialize to 0
+            let totalCommentsCount = parseInt(localStorage.getItem('totalCommentsCount')) || 0; 
+            updateTotalCommentsDisplay(); // Update display on load
+
+            /**
+             * Updates the floating counter display.
+             */
+            function updateCounterDisplay() {
+                floatingCounterDisplay.textContent = counterValue;
+            }
+
+            /**
+             * Updates the total comments display and saves to localStorage.
+             */
+            function updateTotalCommentsDisplay() {
+                totalCommentsDisplay.textContent = totalCommentsCount;
+                localStorage.setItem('totalCommentsCount', totalCommentsCount); // Save to localStorage
+            }
+
+            /**
+             * Increments both counter values and updates their displays.
+             */
+            function incrementCounters() {
+                counterValue++;
+                totalCommentsCount++; // Increment persistent counter
+                updateCounterDisplay();
+                updateTotalCommentsDisplay(); // Update persistent counter display and save
+            }
+
+            /**
+             * Resets the main counter value to 0 and provides visual feedback.
+             */
+            function resetCounter() {
+                counterValue = 0;
+                updateCounterDisplay();
+                floatingCounterDisplay.classList.add('reset-feedback');
+                setTimeout(() => {
+                    floatingCounterDisplay.classList.remove('reset-feedback');
+                }, 500); // Remove feedback class after 0.5 seconds
+            }
+
+            // Event Listeners for Floating Counter Button (Click and Long Press)
+            floatingCounterButton.addEventListener('mousedown', (e) => {
+                // Only trigger long press on left click
+                if (e.button === 0) {
+                    longPressTimer = setTimeout(() => {
+                        floatingCounterButton.classList.add('long-press-active');
+                        resetCounter();
+                    }, LONG_PRESS_THRESHOLD);
+                }
+            });
+
+            floatingCounterButton.addEventListener('mouseup', (e) => {
+                clearTimeout(longPressTimer);
+                if (floatingCounterButton.classList.contains('long-press-active')) {
+                    floatingCounterButton.classList.remove('long-press-active');
+                } else {
+                    // If not a long press, it's a click
+                    if (e.button === 0) { // Check for left click
+                        incrementCounters(); // Call the function that increments both
+                    }
+                }
+            });
+
+            floatingCounterButton.addEventListener('mouseleave', () => {
+                clearTimeout(longPressTimer);
+                floatingCounterButton.classList.remove('long-press-active');
+            });
+
+            // Touch event listeners for mobile long press
+            floatingCounterButton.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // Prevent default touch behavior (e.g., scrolling)
+                longPressTimer = setTimeout(() => {
+                    floatingCounterButton.classList.add('long-press-active');
+                    resetCounter();
+                }, LONG_PRESS_THRESHOLD);
+            }, { passive: false }); // Use passive: false to allow preventDefault
+
+            floatingCounterButton.addEventListener('touchend', (e) => {
+                clearTimeout(longPressTimer);
+                if (floatingCounterButton.classList.contains('long-press-active')) {
+                    floatingCounterButton.classList.remove('long-press-active');
+                } else {
+                    // If not a long press, it's a tap
+                    incrementCounters(); // Call the function that increments both
+                }
+            });
+
+            floatingCounterButton.addEventListener('touchcancel', () => {
+                clearTimeout(longPressTimer);
+                floatingCounterButton.classList.remove('long-press-active');
+            });
+
+            // --- Clear All Inputs Logic ---
+            function clearAllInputs() {
+                const inputFields = document.querySelectorAll('input[type="text"]');
+                inputFields.forEach(input => {
+                    input.value = '';
+                });
+            }
+
+            // --- Generate Report Logic ---
+            const generateReportButton = document.getElementById('generate-report-button');
+            const reportModal = document.getElementById('report-modal');
+            const reportModalBody = document.getElementById('report-modal-body');
+            const modalCloseButton = document.querySelector('.modal-close-button');
+            const downloadReportButton = document.getElementById('download-report-button');
+
+            /**
+             * Collects data from input fields and generates a formatted report.
+             */
+            function generateReport() {
+                let reportContent = '';
+
+                // Get current date
+                const today = new Date();
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                const formattedDate = today.toLocaleDateString('es-ES', options);
+                reportContent += `<strong>Fecha:</strong> ${formattedDate}\n\n`;
+
+                // Add Presidente and Ayudante to the report
+                reportContent += `<strong>Presidente:</strong> ${document.getElementById('presidente-nombre').value || 'N/A'}\n`;
+                reportContent += `<strong>Ayudante:</strong> ${document.getElementById('ayudante-nombre').value || 'N/A'}\n\n`;
+
+                // Tesoros de la Biblia
+                reportContent += '<strong>TESOROS DE LA BIBLIA</strong>\n';
+                reportContent += `1. ${document.getElementById('tema-biblia-nombre').value || 'N/A'} - ${document.getElementById('tema-biblia-duracion').value || 'N/A'}\n`;
+                reportContent += `2. ${document.getElementById('perlas-nombre').value || 'N/A'} - ${document.getElementById('perlas-duracion').value || 'N/A'}\n`;
+                reportContent += `3. ${document.getElementById('lectura-biblia-nombre').value || 'N/A'} - ${document.getElementById('lectura-biblia-duracion').value || 'N/A'}\n\n`;
+
+                // Seamos Mejores Maestros
+                reportContent += '<strong>SEAMOS MEJORES MAESTROS</strong>\n';
+                reportContent += `4. ${document.getElementById('primera-conversacion-nombre').value || 'N/A'} - ${document.getElementById('primera-conversacion-duracion').value || 'N/A'}\n`;
+                reportContent += `5. ${document.getElementById('revisita-nombre').value || 'N/A'} - ${document.getElementById('revisita-duracion').value || 'N/A'}\n`;
+                reportContent += `6. ${document.getElementById('curso-biblico-nombre').value || 'N/A'} - ${document.getElementById('curso-biblico-duracion').value || 'N/A'}\n\n`;
+
+                // Nuestra Vida Cristiana
+                reportContent += '<strong>NUESTRA VIDA CRISTIANA</strong>\n';
+                reportContent += `7. ${document.getElementById('discurso-nombre').value || 'N/A'} - ${document.getElementById('discurso-duracion').value || 'N/A'}\n`;
+                reportContent += `8. ${document.getElementById('necesidades-nombre').value || 'N/A'} - ${document.getElementById('necesidades-duracion').value || 'N/A'}\n`;
+                reportContent += `9. ${document.getElementById('estudio-biblia-nombre').value || 'N/A'} - ${document.getElementById('estudio-biblia-duracion').value || 'N/A'}\n\n`;
+
+                // Add total comments from the new persistent counter with the desired text
+                reportContent += `<strong>Total de comentarios realizados:</strong> ${totalCommentsCount}\n\n`;
+
+
+                reportModalBody.innerHTML = reportContent; // Set HTML content for display
+                reportModal.style.display = 'flex'; // Show the modal
+            }
+
+            // Event Listener for Generate Report Button
+            generateReportButton.addEventListener('click', generateReport);
+
+            // Close report modal when clicking on the close button
+            modalCloseButton.addEventListener('click', () => {
+                reportModal.style.display = 'none';
+            });
+
+            // Close report modal when clicking outside of the modal content
+            window.addEventListener('click', (event) => {
+                if (event.target == reportModal) {
+                    reportModal.style.display = 'none';
+                }
+            });
+
+            // --- Download Report as PNG Logic ---
+            downloadReportButton.addEventListener('click', () => {
+                // Apply temporary left padding for the PNG capture
+                const originalPaddingLeft = reportModalBody.style.paddingLeft;
+                reportModalBody.style.paddingLeft = '3rem'; // Adjust this value as needed
+
+                html2canvas(reportModalBody, {
+                    scale: 2, // Increase scale for better resolution
+                    useCORS: true, // Important if you have external resources (like fonts)
+                    backgroundColor: '#ffffff' // Set background color to white for consistent look
+                }).then(canvas => {
+                    // Convert the canvas to a PNG data URL
+                    const imageUrl = canvas.toDataURL('image/png');
+                    const filename = 'Informe_Reunion.png';
+
+                    // Create a temporary link element to trigger the download
+                    const a = document.createElement('a');
+                    a.href = imageUrl;
+                    a.download = filename;
+                    document.body.appendChild(a); // Append to body is necessary for Firefox
+                    a.click();
+
+                    document.body.removeChild(a); // Clean up the temporary link
+
+                    // Revert the padding after capture
+                    reportModalBody.style.paddingLeft = originalPaddingLeft;
+                }).catch(error => {
+                    console.error('Error al generar la imagen del informe:', error);
+                    // Revert the padding in case of error too
+                    reportModalBody.style.paddingLeft = originalPaddingLeft;
+                });
+            });
+
+            // --- Reset Data Logic ---
+            const resetDataButton = document.getElementById('reset-data-button');
+            const confirmationModal = document.getElementById('confirmation-modal');
+            const confirmYesButton = document.getElementById('confirm-yes-button');
+            const confirmNoButton = document.getElementById('confirm-no-button');
+
+            // Event listener for the "Resetear datos" button
+            resetDataButton.addEventListener('click', () => {
+                confirmationModal.style.display = 'flex'; // Show the confirmation modal
+            });
+
+            // Event listener for "Sí" button in confirmation modal
+            confirmYesButton.addEventListener('click', () => {
+                clearAllInputs(); // Clear all input fields
+                totalCommentsCount = 0; // Reset persistent counter
+                updateTotalCommentsDisplay(); // Update total comments display and localStorage
+                confirmationModal.style.display = 'none'; // Hide the confirmation modal
+            });
+
+            // Event listener for "No" button in confirmation modal
+            confirmNoButton.addEventListener('click', () => {
+                confirmationModal.style.display = 'none'; // Hide the confirmation modal
+            });
+
+            // Close confirmation modal when clicking outside of the modal content
+            window.addEventListener('click', (event) => {
+                if (event.target == confirmationModal) {
+                    confirmationModal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
