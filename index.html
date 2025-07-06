@@ -1032,11 +1032,40 @@
                 floatingCounterButton.classList.remove('long-press-active');
             });
 
+            // --- Persistence Logic ---
+            const inputFields = document.querySelectorAll('input[type="text"]');
+
+            /**
+             * Saves the current values of all input fields to localStorage.
+             */
+            function saveInputs() {
+                inputFields.forEach(input => {
+                    localStorage.setItem(input.id, input.value);
+                });
+            }
+
+            /**
+             * Loads values from localStorage into the input fields.
+             */
+            function loadInputs() {
+                inputFields.forEach(input => {
+                    input.value = localStorage.getItem(input.id) || '';
+                });
+            }
+
+            // Load inputs when the page loads
+            loadInputs();
+
+            // Save inputs whenever an input field changes
+            inputFields.forEach(input => {
+                input.addEventListener('input', saveInputs);
+            });
+
             // --- Clear All Inputs Logic ---
             function clearAllInputs() {
-                const inputFields = document.querySelectorAll('input[type="text"]');
                 inputFields.forEach(input => {
                     input.value = '';
+                    localStorage.removeItem(input.id); // Also remove from localStorage
                 });
             }
 
