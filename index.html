@@ -116,7 +116,7 @@
             background-clip: text;
             color: transparent; /* Fallback for browsers that don't support -webkit-text-fill-color */
             /* Removed padding, border-radius, border, box-shadow, width, and margins */
-            margin-bottom: 10rem; /* Increased margin-bottom for more space */
+            margin-bottom: 12rem; /* Increased margin-bottom significantly */
             text-align: center;
             font-size: 5rem; /* Increased font size */
             font-weight: 700;
@@ -269,81 +269,82 @@
         /* Floating Counter Container (Resettable) - Dark Mode adjustments */
         .floating-counter-container {
             position: fixed;
-            top: 2rem;
+            top: 2rem; /* Aligned with stopwatch container's top */
             right: 2rem;
             display: flex;
             flex-direction: column;
             align-items: center;
             background-color: #2D3748; /* Dark background */
-            padding: 0.8rem;
+            padding: 0.5rem; /* Reduced padding */
             border-radius: 0.75rem;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             z-index: 1000;
-            width: fit-content;
+            width: 120px; /* Fixed width for desktop */
             border: 1px solid #4A5568; /* Subtle border */
         }
         .floating-counter-display {
             background-color: #4299E1; /* Brighter blue for display */
             color: white;
-            padding: 0.8rem 1.2rem;
+            padding: 0.5rem 0.8rem; /* Adjusted padding */
             border-radius: 0.5rem;
             font-weight: 600;
-            font-size: 2.2rem;
+            font-size: 1.2rem; /* Reduced font size */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             transition: background-color 0.3s ease-in-out;
             margin-bottom: 0.5rem;
-            min-width: 80px;
+            min-width: 60px; /* Adjusted min-width */
             text-align: center;
         }
         .floating-counter-display.reset-feedback {
             background-color: #E53E3E; /* Red for reset feedback */
         }
         .floating-counter-button {
-            background-color: #4299E1; /* Brighter blue */
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 0;
+            width: 100%; /* Fill parent container's width */
+            aspect-ratio: 1 / 1; /* Make it a square based on its width */
+            border-radius: 0.75rem; /* Rounded corners for the square */
+            background-color: #2D3748; /* Solid gray background */
+            position: relative;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, border 0.2s ease-in-out;
-            margin-top: 0.5rem;
-
-            background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 70%), linear-gradient(to bottom right, #4299E1, #2B6CB0);
-            position: relative;
-            overflow: hidden;
-        }
-        .floating-counter-button::before,
-        .floating-counter-button::after {
-            content: '';
-            position: absolute;
-            background-color: white;
-            border-radius: 3px;
-            z-index: 1;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+            border: none; /* Remove default border */
+            outline: none;
         }
         .floating-counter-button::before {
-            width: 24px;
-            height: 6px;
+            content: '';
+            position: absolute;
+            top: -2px; /* Adjust to create border thickness */
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(to right, #63B2ED, #A78BFA, #F687B3); /* Gradient border */
+            z-index: -1;
+            border-radius: inherit; /* Inherit rounded corners */
         }
-        .floating-counter-button::after {
-            width: 6px;
-            height: 24px;
+        .floating-counter-button .plus-icon {
+            font-size: 2.5rem; /* Size of the plus icon */
+            font-weight: 700;
+            background: linear-gradient(to right, #63B2ED, #A78BFA, #F687B3); /* Gradient for the plus icon */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent; /* Fallback */
+            line-height: 1; /* Adjust line height to center vertically */
         }
         .floating-counter-button:hover {
-            background-color: #2B6CB0; /* Darker blue on hover */
+            background-color: #3A475C; /* Slightly lighter dark gray on hover */
             transform: translateY(-2px);
         }
         .floating-counter-button:active {
+            background-color: #1C3660; /* Even darker gray when pressed */
             transform: translateY(0);
         }
         .floating-counter-button.long-press-active {
             background-color: #1C3660;
-            border: 2px solid #63B2ED;
         }
 
         /* New Total Comments Counter Container (Persistent) - Dark Mode adjustments */
@@ -430,7 +431,7 @@
         }
         .reset-data-button:hover {
             background-color: #3A475C; /* Slightly lighter dark gray on hover */
-            transform: translateY(-1px);
+            transform: translateY(0);
         }
         .reset-data-button:active {
             transform: translateY(0);
@@ -579,12 +580,12 @@
                 padding-bottom: 4rem; /* Adjusted padding-bottom for mobile */
             }
             .container {
-                padding: 0.25rem; /* Further reduced padding for mobile */
+                padding: 0; /* Removed padding for mobile to be truly edge-to-edge */
                 margin: 0; /* Removed margin for mobile */
             }
             h1 {
                 font-size: 4rem; /* Adjusted font size for mobile h1 */
-                margin-bottom: 6rem; /* Adjusted margin-bottom for mobile h1 */
+                margin-bottom: 8rem; /* Adjusted margin-bottom for mobile h1 */
             }
             .section-title {
                 font-size: 1rem;
@@ -630,40 +631,24 @@
                 font-size: 0.7rem;
             }
             .floating-counter-container {
-                top: 1rem;
+                top: 1rem; /* Aligned with stopwatch container's top for mobile */
                 right: 1rem;
-                padding: 0.6rem;
+                padding: 0.4rem; /* Further reduced padding for mobile */
+                width: 90px; /* Fixed width for mobile */
             }
             .floating-counter-button {
-                width: 60px;
-                height: 60px;
+                width: 100%; /* Fill parent container's width */
+                aspect-ratio: 1 / 1; /* Make it a square based on its width */
+                border-radius: 0.6rem; /* Adjusted border-radius for mobile */
             }
-            .floating-counter-button::before,
-            .floating-counter-button::after {
-                width: 20px;
-                height: 5px;
+            .floating-counter-button::before {
+                top: -1px; /* Adjusted border thickness for mobile */
+                left: -1px;
+                right: -1px;
+                bottom: -1px;
             }
-            .floating-counter-button::after {
-                width: 5px;
-                height: 20px;
-            }
-            .floating-counter-display {
-                padding: 0.4rem 0.8rem;
-                font-size: 1.8rem;
-                min-width: 70px;
-            }
-            .total-comments-container {
-                top: 1rem;
-                left: 1rem;
-                padding: 0.4rem 0.6rem;
-            }
-            .total-comments-label {
-                font-size: 0.8rem;
-                margin-bottom: 0.1rem;
-            }
-            .total-comments-display {
-                font-size: 1.2rem;
-                min-width: 30px;
+            .floating-counter-button .plus-icon {
+                font-size: 2rem; /* Adjusted font size for mobile */
             }
             .generate-report-button, .reset-data-button {
                 padding: 0.6rem 1.5rem; /* Adjusted padding for mobile buttons */
@@ -735,7 +720,7 @@
     <div class="floating-counter-container">
         <div id="floating-counter-display" class="floating-counter-display">0</div>
         <button id="floating-counter-button" class="floating-counter-button" aria-label="Incrementar contador">
-            <!-- Plus icon is created using ::before and ::after pseudo-elements in CSS -->
+            <span class="plus-icon">+</span>
         </button>
     </div>
 
@@ -748,7 +733,7 @@
     <div class="container">
         <h1><strong>REUNIÓN V Y MC</strong></h1>
 
-        <!-- Combined fields for Presidente and Ayudante -->
+        <!-- Combined fields for Presidente y Ayudante -->
         <div class="input-group">
             <div class="mb-4"> <!-- Added a margin-bottom for spacing between Presidente and Ayudante -->
                 <input type="text" id="presidente-nombre" name="presidente-nombre" class="name-input" placeholder="Presidente">
