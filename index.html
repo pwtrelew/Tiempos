@@ -11,111 +11,128 @@
     <!-- html2canvas CDN for converting HTML to image -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        /* Custom styles for Poppins font and general aesthetics */
+        /* Custom styles for Poppins font and general aesthetics - Dark Mode */
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f0f4f8; /* Light gray background, similar to jw.org subtle background */
+            background-color: #1A202C; /* Dark background for the body */
             display: flex;
             justify-content: center;
             align-items: flex-start; /* Align to start for better top spacing */
             min-height: 100vh;
             padding: 2rem;
             padding-top: 10rem; /* Ensures content clears fixed elements at the top */
-            padding-bottom: 2rem;
+            padding-bottom: 5rem; /* Increased padding-bottom for more space */
             box-sizing: border-box;
         }
         .container {
-            background-color: #ffffff;
+            background-color: #2D3748; /* Slightly lighter dark background for the main container */
             padding: 2.5rem;
-            border-radius: 0.75rem; /* Slightly less rounded corners for a cleaner look */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Softer, more subtle shadow */
+            border-radius: 0.75rem; /* Rounded corners */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* More pronounced shadow for dark mode */
             max-width: 600px;
             width: 100%;
-            border: 1px solid #e2e8f0; /* Subtle border, similar to jw.org element separation */
+            border: 1px solid #4A5568; /* Subtle border for separation in dark mode */
         }
         .section-title {
-            font-size: 1.1rem; /* Adjusted smaller font size for subtitles on desktop */
+            font-size: 1.1rem;
             font-weight: 700;
-            color: #1A202C; /* Darker text for headings */
+            color: #4299E1; /* Default blue-green color for section titles */
             margin-top: 2rem;
             margin-bottom: 1.5rem;
-            text-align: left;
+            text-align: center; /* Changed to center alignment */
+        }
+        /* Specific style for "SEAMOS MEJORES MAESTROS" title */
+        #seamos-mejores-maestros-title {
+            color: #D69E2E !important; /* Golden/Orange color as requested, forced with !important */
+        }
+        /* Specific style for "NUESTRA VIDA CRISTIANA" title */
+        #nuestra-vida-cristiana-title {
+            color: #EF817B !important; /* Reddish/Salmon color as requested, forced with !important */
         }
         .input-group {
             margin-bottom: 1.5rem;
+            padding: 0.75rem 1rem; /* Added padding to the input group */
+            background-color: #252F3F; /* Darker gray background for the input group container */
+            border-radius: 0.5rem; /* Rounded corners for the input group */
+            border: 1px solid #3A475C; /* Subtle border for the input group */
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); /* Inner shadow for depth */
         }
         .input-group label {
-            display: inline-block; /* Make label inline with the name input */
-            margin-bottom: 0; /* Remove default block margin */
+            display: inline-block;
+            margin-bottom: 0;
             font-weight: 600;
-            color: #2D3748; /* Slightly lighter dark text for labels */
+            color: #CBD5E0; /* Lighter text for labels */
             font-size: 1.1rem;
-            margin-right: 0.5rem; /* Space after the label */
-            vertical-align: middle; /* Align vertically with input */
+            margin-right: 0.5rem;
+            vertical-align: middle;
         }
-        /* Styles for inputs within a pair (now always stacked) */
-        .input-pair {
-            display: block; /* Container for name and duration inputs */
-            margin-bottom: 0.75rem; /* Space between pairs */
-        }
-        .input-pair input[type="text"] {
-            width: 100%; /* Make inputs take full width */
+        /* UNIVERSAL STYLE FOR ALL TEXT INPUTS */
+        input[type="text"] {
+            width: 100%;
             padding: 0.8rem 1rem;
-            border: 1px solid #CBD5E0; /* Light gray border */
-            border-radius: 0.5rem; /* Slightly less rounded for inputs */
+            background-color: #2D3748; /* Changed to match container background */
+            border: 1px solid #4A5568; /* Adjusted border for inputs */
+            border-radius: 0.5rem;
             font-size: 1rem;
-            color: #4A5568;
+            color: #F7FAFC; /* Light text for input values */
             transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
             outline: none;
-            margin-bottom: 0.75rem; /* Space between the two inputs */
+            margin-bottom: 0.75rem; /* Keep existing margin */
         }
-        .input-pair input[type="text"]:last-child {
-            margin-bottom: 0; /* No margin after the last input in the pair */
+        /* Placeholder color for dark mode */
+        input[type="text"]::placeholder {
+            color: #A0AEC0; /* A lighter gray for placeholder text */
+            opacity: 1; /* Ensure opacity is 1 for consistent visibility across browsers */
         }
-        .input-pair input[type="text"]:focus {
-            border-color: #1D60A1; /* jw.org-like blue on focus */
-            box-shadow: 0 0 0 2px rgba(29, 96, 161, 0.2); /* Subtle blue shadow on focus */
+        /* Focus state for dark mode */
+        input[type="text"]:focus {
+            border-color: #63B2ED; /* Brighter blue on focus */
+            box-shadow: 0 0 0 2px rgba(99, 178, 237, 0.4); /* Brighter shadow on focus */
         }
 
-        /* Name input (inline with label) */
+        /* Specific margin adjustments for inputs that are direct children of input-group */
+        .input-group input[type="text"]:last-child {
+            margin-bottom: 0; /* No margin after the last input in the group */
+        }
+
         .name-input {
-            display: inline-block; /* Keep it on the same line as the label */
-            vertical-align: middle; /* Align vertically with label */
-            width: calc(100% - 50px); /* Adjust width to make space for label and its margin */
-            margin-bottom: 0; /* Ensure no extra margin */
+            display: inline-block;
+            vertical-align: middle;
+            width: calc(100% - 0px); /* Adjusted width as label is removed */
+            margin-bottom: 0;
         }
 
-        /* Duration input (always on a new line, full width) */
         .duration-input-block {
-            display: block; /* Force to new line */
-            width: 100%; /* Take full width */
-            margin-top: 0.75rem; /* Space above the duration input */
+            display: block;
+            width: 100%;
+            margin-top: 0.75rem;
         }
 
         h1 {
-            /* Reverted styles for the blue box effect */
-            background-color: transparent; /* No background color */
-            color: #1A202C; /* Dark text color */
-            padding: 0; /* No padding */
-            border-radius: 0; /* No border radius */
-            margin-bottom: 6rem; /* Keep increased margin-bottom for h1 */
+            /* Applied the vibrant gradient directly to the text */
+            background: linear-gradient(to right, #63B2ED, #A78BFA, #F687B3); /* Blue, Purple, Pink/Red gradient */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent; /* Fallback for browsers that don't support -webkit-text-fill-color */
+            /* Removed padding, border-radius, border, box-shadow, width, and margins */
+            margin-bottom: 10rem; /* Increased margin-bottom for more space */
             text-align: center;
-            font-size: 4.5rem; /* Increased font size for h1 on desktop */
+            font-size: 5rem; /* Increased font size */
             font-weight: 700;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4); /* Keep text shadow */
         }
 
-        /* Specific margin adjustment for Presidente and Ayudante input groups */
-        #presidente-group { /* Added ID for specific targeting */
-            margin-top: 2rem; /* Increased margin-top for Presidente */
-            margin-bottom: 0.5rem; /* Reduced margin-bottom for Presidente */
-        }
-        #ayudante-group { /* Added ID for specific targeting */
-            margin-top: 0.5rem; /* Reduced margin-top for Ayudante */
-            margin-bottom: 1.5rem; /* Keep original margin-bottom for Ayudante */
+        /* Removed specific margins for Presidente and Ayudante groups as they are now combined and labels are removed */
+        #presidente-group, #ayudante-group {
+            margin: 0;
+            padding: 0;
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
         }
 
-
-        /* Stopwatch specific styles */
+        /* Stopwatch specific styles - Dark Mode adjustments */
         .stopwatch-container {
             position: fixed;
             top: 2rem;
@@ -124,26 +141,26 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #ffffff; /* White background */
+            background-color: #2D3748; /* Dark background */
             padding: 0.8rem;
-            border-radius: 0.75rem; /* Rounded corners */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             z-index: 1000;
             width: fit-content;
-            border: 1px solid #e2e8f0; /* Subtle border */
+            border: 1px solid #4A5568; /* Subtle border */
         }
-        .stopwatch-display-wrapper { /* Wrapper for display and copy button */
+        .stopwatch-display-wrapper {
             display: flex;
             align-items: center;
-            gap: 0.5rem; /* Space between time and copy button */
+            gap: 0.5rem;
             margin-bottom: 0.75rem;
-            position: relative; /* For copy message positioning */
+            position: relative;
         }
         .stopwatch-display {
             font-size: 2rem;
             font-weight: 700;
-            color: #1A202C; /* Dark text */
-            min-width: 100px; /* Adjusted to fit MM:SS */
+            color: #F7FAFC; /* Light text */
+            min-width: 100px;
             text-align: center;
         }
         .stopwatch-buttons {
@@ -158,14 +175,14 @@
             cursor: pointer;
             border: none;
             outline: none;
-            display: flex; /* Added for icon centering */
-            justify-content: center; /* Added for icon centering */
-            align-items: center; /* Added for icon centering */
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        .stopwatch-buttons button svg { /* Styles for SVG icons within buttons */
-            width: 24px; /* Icon size */
+        .stopwatch-buttons button svg {
+            width: 24px;
             height: 24px;
-            fill: currentColor; /* Inherit button text color */
+            fill: currentColor;
         }
         .stopwatch-buttons button:hover {
             transform: translateY(-1px);
@@ -174,18 +191,18 @@
             transform: translateY(0);
         }
         .stopwatch-buttons .start-btn {
-            background-color: #1D60A1; /* jw.org blue */
+            background-color: #38A169; /* Green for start */
             color: white;
         }
         .stopwatch-buttons .start-btn:hover {
-            background-color: #164C81; /* Darker blue on hover */
+            background-color: #2F855A; /* Darker green on hover */
         }
         .stopwatch-buttons .stop-btn {
-            background-color: #DC2626; /* Red for stop */
+            background-color: #E53E3E; /* Red for stop */
             color: white;
         }
         .stopwatch-buttons .stop-btn:hover {
-            background-color: #B91C1C; /* Darker red on hover */
+            background-color: #C53030; /* Darker red on hover */
         }
         .stopwatch-buttons .reset-btn {
             background-color: #6B7280; /* Gray for reset */
@@ -195,22 +212,22 @@
             background-color: #4B5563; /* Darker gray on hover */
         }
 
-        /* Stopwatch Copy Button */
+        /* Stopwatch Copy Button - Dark Mode adjustments */
         .copy-time-button {
-            background-color: #9CA3AF; /* Lighter gray for copy button */
+            background-color: #4A5568; /* Darker gray for copy button */
             color: white;
             border: none;
             border-radius: 0.5rem;
-            width: 36px; /* Size for copy icon button */
+            width: 36px;
             height: 36px;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
-            opacity: 0; /* Hidden by default */
-            visibility: hidden; /* Hidden by default */
+            opacity: 0;
+            visibility: hidden;
         }
         .copy-time-button.visible {
             opacity: 1;
@@ -229,10 +246,10 @@
             fill: currentColor;
         }
 
-        /* Copy confirmation message */
+        /* Copy confirmation message - Dark Mode adjustments */
         .copy-confirmation-message {
             position: absolute;
-            top: -30px; /* Position above the button */
+            top: -30px;
             left: 50%;
             transform: translateX(-50%);
             background-color: #4A5568;
@@ -243,143 +260,146 @@
             white-space: nowrap;
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
-            pointer-events: none; /* Allow clicks to pass through */
+            pointer-events: none;
         }
         .copy-confirmation-message.show {
             opacity: 1;
         }
 
-        /* Floating Counter Container (Resettable) */
+        /* Floating Counter Container (Resettable) - Dark Mode adjustments */
         .floating-counter-container {
             position: fixed;
-            top: 2rem; /* Remains at top */
-            right: 2rem; /* Remains on right */
+            top: 2rem;
+            right: 2rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #ffffff; /* White background */
-            padding: 0.8rem; /* Added padding for consistency */
-            border-radius: 0.75rem; /* Rounded corners */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+            background-color: #2D3748; /* Dark background */
+            padding: 0.8rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             z-index: 1000;
             width: fit-content;
-            border: 1px solid #e2e8f0; /* Subtle border */
+            border: 1px solid #4A5568; /* Subtle border */
         }
         .floating-counter-display {
-            background-color: #1D60A1; /* jw.org blue for display */
+            background-color: #4299E1; /* Brighter blue for display */
             color: white;
-            padding: 0.8rem 1.2rem; /* Increased padding */
-            border-radius: 0.5rem; /* Slightly less rounded */
+            padding: 0.8rem 1.2rem;
+            border-radius: 0.5rem;
             font-weight: 600;
-            font-size: 2.2rem; /* Increased font size significantly */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease-in-out; /* For reset feedback */
-            margin-bottom: 0.5rem; /* Space below display */
-            min-width: 80px; /* Ensure it's wide enough for larger numbers */
+            font-size: 2.2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease-in-out;
+            margin-bottom: 0.5rem;
+            min-width: 80px;
             text-align: center;
         }
         .floating-counter-display.reset-feedback {
-            background-color: #DC2626; /* Red for reset feedback */
+            background-color: #E53E3E; /* Red for reset feedback */
         }
         .floating-counter-button {
-            background-color: #1D60A1; /* jw.org blue */
-            color: white; /* For icon */
+            background-color: #4299E1; /* Brighter blue */
+            color: white;
             border: none;
-            border-radius: 50%; /* Round shape */
-            width: 60px; /* Original size */
-            height: 60px; /* Original size */
-            font-size: 0; /* Hide any potential text */
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, border 0.2s ease-in-out;
-            margin-top: 0.5rem; /* Space below display/reset button */
-            
-            /* Light effect for the button - applied to the base color */
-            background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 70%), linear-gradient(to bottom right, #1D60A1, #3B82F6); /* Base color with gradient */
-            position: relative; /* Needed for positioning the inner plus */
-            overflow: hidden; /* Ensure inner plus doesn't spill out */
+            margin-top: 0.5rem;
+
+            background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 70%), linear-gradient(to bottom right, #4299E1, #2B6CB0);
+            position: relative;
+            overflow: hidden;
         }
         .floating-counter-button::before,
-        .floating-counter-button::after { /* Plus sign bars */
+        .floating-counter-button::after {
             content: '';
             position: absolute;
             background-color: white;
-            border-radius: 3px; /* Rounded ends for the plus bars */
+            border-radius: 3px;
             z-index: 1;
         }
-        .floating-counter-button::before { /* Horizontal bar */
-            width: 24px; /* Size of the plus */
-            height: 6px; /* Thickness of the bar */
+        .floating-counter-button::before {
+            width: 24px;
+            height: 6px;
         }
-        .floating-counter-button::after { /* Vertical bar */
-            width: 6px; /* Thickness of the bar */
-            height: 24px; /* Size of the plus */
+        .floating-counter-button::after {
+            width: 6px;
+            height: 24px;
         }
         .floating-counter-button:hover {
-            background-color: #164C81; /* Darker blue on hover */
+            background-color: #2B6CB0; /* Darker blue on hover */
             transform: translateY(-2px);
         }
         .floating-counter-button:active {
-            background-color: #113A60; /* Even darker blue when long pressed */
-            border: 2px solid #60A5FA; /* Lighter border for feedback */
             transform: translateY(0);
         }
         .floating-counter-button.long-press-active {
-            background-color: #113A60; /* Even darker blue when long pressed */
-            border: 2px solid #60A5FA; /* Lighter border for feedback */
+            background-color: #1C3660;
+            border: 2px solid #63B2ED;
         }
 
-        /* New Total Comments Counter Container */
+        /* New Total Comments Counter Container (Persistent) - Dark Mode adjustments */
         .total-comments-container {
             position: fixed;
-            top: 2rem; /* Aligned with other floating elements */
-            left: 2rem; /* Top-left corner */
+            top: 2rem;
+            left: 2rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #ffffff;
-            padding: 0.5rem 0.8rem; /* Reduced padding */
+            background-color: #2D3748;
+            padding: 0.5rem 0.8rem;
             border-radius: 0.75rem;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             z-index: 1000;
             width: fit-content;
-            border: 1px solid #e2e8f0; /* Subtle border */
+            border: 1px solid #4A5568;
         }
         .total-comments-label {
             font-size: 0.9rem;
             font-weight: 600;
-            color: #4A5568; /* Medium gray text */
-            margin-bottom: 0.2rem; /* Reduced margin */
+            color: #CBD5E0; /* Light gray text */
+            margin-bottom: 0.2rem;
         }
         .total-comments-display {
-            font-size: 1.5rem; /* Slightly reduced font size for number */
+            font-size: 1.5rem;
             font-weight: 700;
-            color: #1D60A1; /* jw.org blue for distinction */
-            min-width: 35px; /* Reduced min-width to allow shrinking */
+            color: #4299E1; /* Brighter blue for distinction */
+            min-width: 35px;
             text-align: center;
         }
-
 
         /* Generate Report Button */
         .generate-report-button {
             margin-top: 2rem;
-            width: 100%;
-            background-color: #1D60A1; /* jw.org blue */
-            color: white;
+            width: fit-content; /* Adjust width to fit content */
+            margin-left: auto; /* Center the button */
+            margin-right: auto; /* Center the button */
+            background-color: #2D3748; /* Dark gray background for the button */
+            color: transparent; /* Make text transparent to show gradient */
+            background-image: linear-gradient(to right, #63B2ED, #A78BFA, #F687B3); /* Gradient for text */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             font-weight: 600;
-            padding: 0.8rem 1.2rem;
-            border-radius: 0.5rem; /* Slightly less rounded */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 0.8rem 2.5rem; /* Adjusted padding for rounded corners */
+            border-radius: 9999px; /* Fully rounded corners */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
             cursor: pointer;
-            border: none;
+            border: 1px solid #4A5568; /* Subtle border for the button */
             outline: none;
+            display: block; /* Ensure it behaves as a block element for margin auto to work */
         }
         .generate-report-button:hover {
-            background-color: #164C81; /* Darker blue on hover */
+            background-color: #3A475C; /* Slightly lighter dark gray on hover */
             transform: translateY(-1px);
         }
         .generate-report-button:active {
@@ -388,56 +408,63 @@
 
         /* Reset Data Button */
         .reset-data-button {
-            margin-top: 1rem; /* Space between this and the generate report button */
-            width: 100%;
-            background-color: #DC2626; /* Red for reset */
-            color: white;
+            margin-top: 1rem;
+            width: fit-content; /* Adjust width to fit content */
+            margin-left: auto; /* Center the button */
+            margin-right: auto; /* Center the button */
+            background-color: #2D3748; /* Dark gray background for the button */
+            color: transparent; /* Make text transparent to show gradient */
+            background-image: linear-gradient(to right, #63B2ED, #A78BFA, #F687B3); /* Gradient for text */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             font-weight: 600;
-            padding: 0.8rem 1.2rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 0.8rem 2.5rem; /* Adjusted padding for rounded corners */
+            border-radius: 9999px; /* Fully rounded corners */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
             cursor: pointer;
-            border: none;
+            border: 1px solid #E53E3E; /* Red border for the reset button */
             outline: none;
+            display: block; /* Ensure it behaves as a block element for margin auto to work */
         }
         .reset-data-button:hover {
-            background-color: #B91C1C; /* Darker red on hover */
+            background-color: #3A475C; /* Slightly lighter dark gray on hover */
             transform: translateY(-1px);
         }
         .reset-data-button:active {
             transform: translateY(0);
         }
 
-        /* Modal styles */
+        /* Modal styles - Dark Mode adjustments */
         .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 2000; /* Sit on top */
+            display: none;
+            position: fixed;
+            z-index: 2000;
             left: 0;
             top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7); /* Darker overlay */
             align-items: center;
             justify-content: center;
         }
         .modal-content {
-            background-color: #ffffff;
+            background-color: #2D3748; /* Dark background for modal content */
             margin: auto;
             padding: 2.5rem;
-            border-radius: 0.75rem; /* Rounded corners */
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
             max-width: 700px;
             width: 90%;
             position: relative;
             animation: fadeIn 0.3s ease-out;
-            display: flex; /* Use flexbox for content arrangement */
-            flex-direction: column; /* Stack children vertically */
+            display: flex;
+            flex-direction: column;
         }
         .modal-close-button {
-            color: #6B7280; /* Gray close button */
+            color: #CBD5E0; /* Light gray close button */
             position: absolute;
             top: 1rem;
             right: 1.5rem;
@@ -447,71 +474,71 @@
         }
         .modal-close-button:hover,
         .modal-close-button:focus {
-            color: #4B5563;
+            color: #F7FAFC; /* Lighter on hover */
             text-decoration: none;
             cursor: pointer;
         }
         .modal-title {
             font-size: 2rem;
             font-weight: 700;
-            color: #1A202C; /* Dark text */
+            color: #F7FAFC; /* Light text */
             margin-bottom: 1.5rem;
             text-align: center;
         }
         .modal-body {
             font-size: 1rem;
-            color: #4A5568;
+            color: #E2E8F0; /* Light text */
             line-height: 1.6;
-            white-space: pre-wrap; /* Preserve whitespace and line breaks */
-            max-height: 70vh; /* Max height for scrollable content */
-            overflow-y: auto; /* Enable scrolling for long reports */
-            padding-right: 10px; /* Space for scrollbar */
-            flex-grow: 1; /* Allow body to take available space */
-            margin-bottom: 1.5rem; /* Space before the download button */
+            white-space: pre-wrap;
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: 10px;
+            flex-grow: 1;
+            margin-bottom: 1.5rem;
         }
         .modal-body strong {
-            color: #2D3748; /* Slightly lighter dark text for strong tags */
+            color: #F7FAFC; /* Lighter text for strong tags */
         }
 
-        /* Download Button in Modal */
+        /* Download Button in Modal - Dark Mode adjustments */
         .modal-download-button {
-            background-color: #1D60A1; /* jw.org blue */
+            background-color: #4299E1; /* Brighter blue */
             color: white;
             font-weight: 600;
             padding: 0.8rem 1.2rem;
-            border-radius: 0.5rem; /* Slightly less rounded */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
             cursor: pointer;
             border: none;
             outline: none;
-            width: 100%; /* Full width within modal */
-            margin-top: 1rem; /* Space above the button */
+            width: 100%;
+            margin-top: 1rem;
         }
         .modal-download-button:hover {
-            background-color: #164C81; /* Darker blue on hover */
+            background-color: #2B6CB0; /* Darker blue on hover */
             transform: translateY(-1px);
         }
         .modal-download-button:active {
             transform: translateY(0);
         }
 
-        /* Confirmation Modal Specific Styles */
+        /* Confirmation Modal Specific Styles - Dark Mode adjustments */
         #confirmation-modal .modal-content {
-            max-width: 400px; /* Smaller width for confirmation */
+            max-width: 400px;
             text-align: center;
             padding: 2rem;
         }
         #confirmation-modal .modal-message {
             font-size: 1.1rem;
-            color: #1A202C;
+            color: #F7FAFC; /* Light text */
             margin-bottom: 1.5rem;
             font-weight: 600;
         }
         #confirmation-modal .modal-buttons {
             display: flex;
             justify-content: center;
-            gap: 1rem; /* Space between Yes/No buttons */
+            gap: 1rem;
         }
         #confirmation-modal .modal-buttons button {
             padding: 0.6rem 1.5rem;
@@ -523,11 +550,11 @@
             transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
         }
         #confirmation-modal .modal-buttons .confirm-yes {
-            background-color: #DC2626; /* Red for Yes (delete) */
+            background-color: #E53E3E; /* Red for Yes (delete) */
             color: white;
         }
         #confirmation-modal .modal-buttons .confirm-yes:hover {
-            background-color: #B91C1C;
+            background-color: #C53030;
             transform: translateY(-1px);
         }
         #confirmation-modal .modal-buttons .confirm-no {
@@ -536,9 +563,8 @@
         }
         #confirmation-modal .modal-buttons .confirm-no:hover {
             background-color: #4B5563;
-            transform: translateY(-1px);
+            transform: translateY(0);
         }
-
 
         /* Keyframe animation for modal */
         @keyframes fadeIn {
@@ -546,41 +572,42 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Responsive adjustments for smaller screens */
+        /* Responsive adjustments for smaller screens - Dark Mode adjustments */
         @media (max-width: 640px) {
             body {
                 padding-top: 8rem;
-                padding-bottom: 2rem;
+                padding-bottom: 4rem; /* Adjusted padding-bottom for mobile */
             }
             .container {
-                /* Adjusted for mobile: reduced padding and margin for more content space */
-                padding: 0.75rem; /* Reduced from 1rem */
-                margin: 0.25rem; /* Reduced from 0.5rem */
+                padding: 0.25rem; /* Further reduced padding for mobile */
+                margin: 0; /* Removed margin for mobile */
             }
             h1 {
-                font-size: 3.5rem; /* Adjusted h1 for mobile to be larger */
-                padding: 0; /* Removed padding for mobile h1 */
-                margin-bottom: 4.5rem; /* Adjusted margin-bottom for mobile h1 */
+                font-size: 4rem; /* Adjusted font size for mobile h1 */
+                margin-bottom: 6rem; /* Adjusted margin-bottom for mobile h1 */
             }
             .section-title {
-                font-size: 1rem; /* Adjusted smaller font size for subtitles on mobile */
+                font-size: 1rem;
+            }
+            .input-group {
+                padding: 0.6rem 0.8rem; /* Adjusted padding for input groups on mobile */
             }
             .input-group label {
                 font-size: 1rem;
-                margin-right: 0.3rem; /* Smaller margin for mobile */
+                margin-right: 0.3rem;
             }
             .name-input {
-                width: calc(100% - 40px); /* Adjust width for mobile label */
+                width: calc(100% - 0px); /* Adjusted width as label is removed */
             }
             .duration-input-block {
-                margin-top: 0.5rem; /* Smaller margin for mobile */
+                margin-top: 0.5rem;
             }
             .stopwatch-container {
                 top: 1rem;
                 transform: translateX(-50%) scale(0.9);
             }
             .stopwatch-display-wrapper {
-                gap: 0.3rem; /* Smaller gap for mobile */
+                gap: 0.3rem;
             }
             .stopwatch-display {
                 font-size: 1.5rem;
@@ -603,43 +630,43 @@
                 font-size: 0.7rem;
             }
             .floating-counter-container {
-                top: 1rem; /* Adjusted for mobile */
+                top: 1rem;
                 right: 1rem;
-                padding: 0.6rem; /* Adjusted padding for mobile */
+                padding: 0.6rem;
             }
             .floating-counter-button {
-                width: 60px; /* Reverted to original size for mobile */
-                height: 60px; /* Reverted to original size for mobile */
+                width: 60px;
+                height: 60px;
             }
             .floating-counter-button::before,
-            .floating-counter-button::after { /* Plus sign bars for mobile */
-                width: 20px; /* Smaller plus for mobile */
-                height: 5px; /* Thinner bars for mobile */
+            .floating-counter-button::after {
+                width: 20px;
+                height: 5px;
             }
             .floating-counter-button::after {
                 width: 5px;
                 height: 20px;
             }
             .floating-counter-display {
-                padding: 0.4rem 0.8rem; /* Adjusted padding for mobile */
-                font-size: 1.8rem; /* Adjusted font size for mobile */
+                padding: 0.4rem 0.8rem;
+                font-size: 1.8rem;
                 min-width: 70px;
             }
             .total-comments-container {
-                top: 1rem; /* Adjusted for mobile */
+                top: 1rem;
                 left: 1rem;
-                padding: 0.4rem 0.6rem; /* Further reduced padding for mobile */
+                padding: 0.4rem 0.6rem;
             }
             .total-comments-label {
                 font-size: 0.8rem;
-                margin-bottom: 0.1rem; /* Further reduced margin */
+                margin-bottom: 0.1rem;
             }
             .total-comments-display {
-                font-size: 1.2rem; /* Further reduced font size for mobile */
-                min-width: 30px; /* Further reduced min-width for mobile */
+                font-size: 1.2rem;
+                min-width: 30px;
             }
             .generate-report-button, .reset-data-button {
-                padding: 0.6rem 1rem;
+                padding: 0.6rem 1.5rem; /* Adjusted padding for mobile buttons */
                 font-size: 0.9rem;
             }
             .modal-content {
@@ -721,15 +748,14 @@
     <div class="container">
         <h1><strong>REUNIÓN V Y MC</strong></h1>
 
-        <!-- New fields for Presidente and Ayudante -->
-        <div class="input-group" id="presidente-group">
-            <label for="presidente-nombre">Presidente:</label>
-            <input type="text" id="presidente-nombre" name="presidente-nombre" class="name-input" placeholder="Nombre del Presidente">
-        </div>
-
-        <div class="input-group" id="ayudante-group">
-            <label for="ayudante-nombre">Ayudante:</label>
-            <input type="text" id="ayudante-nombre" name="ayudante-nombre" class="name-input" placeholder="Nombre del Ayudante">
+        <!-- Combined fields for Presidente and Ayudante -->
+        <div class="input-group">
+            <div class="mb-4"> <!-- Added a margin-bottom for spacing between Presidente and Ayudante -->
+                <input type="text" id="presidente-nombre" name="presidente-nombre" class="name-input" placeholder="Presidente">
+            </div>
+            <div>
+                <input type="text" id="ayudante-nombre" name="ayudante-nombre" class="name-input" placeholder="Ayudante">
+            </div>
         </div>
 
         <h3 class="section-title">TESOROS DE LA BIBLIA</h3>
@@ -752,7 +778,7 @@
             <input type="text" id="lectura-biblia-duracion" name="lectura-biblia-duracion" class="duration-input-block duration-input-long" placeholder="Duración">
         </div>
 
-        <h3 class="section-title">SEAMOS MEJORES MAESTROS</h3>
+        <h3 class="section-title" id="seamos-mejores-maestros-title">SEAMOS MEJORES MAESTROS</h3>
 
         <div class="input-group">
             <label for="primera-conversacion-nombre">4.</label>
@@ -772,7 +798,7 @@
             <input type="text" id="curso-biblico-duracion" name="curso-biblico-duracion" class="duration-input-block duration-input-long" placeholder="Duración">
         </div>
 
-        <h3 class="section-title">NUESTRA VIDA CRISTIANA</h3>
+        <h3 class="section-title" id="nuestra-vida-cristiana-title">NUESTRA VIDA CRISTIANA</h3>
 
         <div class="input-group">
             <label for="discurso-nombre">7.</label>
@@ -940,7 +966,7 @@
             // --- New Total Comments Counter Logic (Persistent) ---
             const totalCommentsDisplay = document.getElementById('total-comments-display');
             // Load total comments from localStorage or initialize to 0
-            let totalCommentsCount = parseInt(localStorage.getItem('totalCommentsCount')) || 0; 
+            let totalCommentsCount = parseInt(localStorage.getItem('totalCommentsCount')) || 0;
             updateTotalCommentsDisplay(); // Update display on load
 
             /**
@@ -996,10 +1022,8 @@
                 if (floatingCounterButton.classList.contains('long-press-active')) {
                     floatingCounterButton.classList.remove('long-press-active');
                 } else {
-                    // If not a long press, it's a click
-                    if (e.button === 0) { // Check for left click
-                        incrementCounters(); // Call the function that increments both
-                    }
+                    // If not a long press, it's a tap
+                    incrementCounters(); // Call the function that increments both
                 }
             });
 
@@ -1129,7 +1153,7 @@
             // Close report modal when clicking outside of the modal content
             window.addEventListener('click', (event) => {
                 if (event.target == reportModal) {
-                    reportModal.style.display = 'none';
+                    confirmationModal.style.display = 'none';
                 }
             });
 
@@ -1142,7 +1166,7 @@
                 html2canvas(reportModalBody, {
                     scale: 2, // Increase scale for better resolution
                     useCORS: true, // Important if you have external resources (like fonts)
-                    backgroundColor: '#ffffff' // Set background color to white for consistent look
+                    backgroundColor: '#2D3748' // Set background color to match dark modal content
                 }).then(canvas => {
                     // Convert the canvas to a PNG data URL
                     const imageUrl = canvas.toDataURL('image/png');
