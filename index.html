@@ -20,7 +20,7 @@
             align-items: flex-start; /* Align to start for better top spacing */
             min-height: 100vh;
             padding: 2rem;
-            padding-top: 10rem; /* Ensures content clears fixed elements at the top */
+            padding-top: 4rem; /* Adjusted padding-top for better visibility */
             padding-bottom: 5rem; /* Increased padding-bottom for more space */
             box-sizing: border-box;
         }
@@ -49,14 +49,33 @@
         #nuestra-vida-cristiana-title {
             color: #EF817B !important; /* Reddish/Salmon color as requested, forced with !important */
         }
+        /* Wrapper for section input groups to apply background color */
+        .section-group-wrapper {
+            margin-top: 1.5rem; /* Space between title and first input group */
+            margin-bottom: 2rem; /* Space after the last input group in the section */
+        }
         .input-group {
             margin-bottom: 1.5rem;
             padding: 0.75rem 1rem; /* Added padding to the input group */
-            background-color: #252F3F; /* Darker gray background for the input group container */
+            background-color: #252F3F; /* Default dark gray background for the input group container */
             border-radius: 0.5rem; /* Rounded corners for the input group */
             border: 1px solid #3A475C; /* Subtle border for the input group */
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); /* Inner shadow for depth */
         }
+        /* Specific background colors for input groups based on section */
+        .tesoros-section .input-group {
+            background-color: #4299E1; /* Blue-green for Tesoros de la Biblia */
+            border-color: #3182CE; /* Slightly darker blue for border */
+        }
+        .seamos-section .input-group {
+            background-color: #D69E2E; /* Golden/Orange for Seamos Mejores Maestros */
+            border-color: #B7791F; /* Slightly darker orange for border */
+        }
+        .vida-cristiana-section .input-group {
+            background-color: #EF817B; /* Reddish/Salmon for Nuestra Vida Cristiana */
+            border-color: #E53E3E; /* Slightly darker red for border */
+        }
+
         .input-group label {
             display: inline-block;
             margin-bottom: 0;
@@ -116,7 +135,7 @@
             background-clip: text;
             color: transparent; /* Fallback for browsers that don't support -webkit-text-fill-color */
             /* Removed padding, border-radius, border, box-shadow, width, and margins */
-            margin-bottom: 12rem; /* Increased margin-bottom significantly */
+            margin-bottom: 4rem; /* Adjusted margin-bottom for better visibility */
             text-align: center;
             font-size: 5rem; /* Increased font size */
             font-weight: 700;
@@ -299,9 +318,9 @@
             background-color: #E53E3E; /* Red for reset feedback */
         }
         .floating-counter-button {
-            width: 100%; /* Fill parent container's width */
-            aspect-ratio: 1 / 1; /* Make it a square based on its width */
-            border-radius: 0.75rem; /* Rounded corners for the square */
+            width: 60px; /* Fixed width for circular button */
+            height: 60px; /* Fixed height for circular button */
+            border-radius: 50%; /* Make it a circle */
             background-color: #2D3748; /* Solid gray background */
             position: relative;
             overflow: hidden;
@@ -576,7 +595,7 @@
         /* Responsive adjustments for smaller screens - Dark Mode adjustments */
         @media (max-width: 640px) {
             body {
-                padding-top: 8rem;
+                padding-top: 12rem; /* Increased padding-top for mobile to prevent overlap */
                 padding-bottom: 4rem; /* Adjusted padding-bottom for mobile */
             }
             .container {
@@ -584,8 +603,8 @@
                 margin: 0; /* Removed margin for mobile */
             }
             h1 {
-                font-size: 4rem; /* Adjusted font size for mobile h1 */
-                margin-bottom: 8rem; /* Adjusted margin-bottom for mobile h1 */
+                font-size: 3rem; /* Adjusted font size for mobile h1 */
+                margin-bottom: 4rem; /* Adjusted margin-bottom for mobile h1 */
             }
             .section-title {
                 font-size: 1rem;
@@ -634,12 +653,12 @@
                 top: 1rem; /* Aligned with stopwatch container's top for mobile */
                 right: 1rem;
                 padding: 0.4rem; /* Further reduced padding for mobile */
-                width: 90px; /* Fixed width for mobile */
+                width: 70px; /* Fixed width for mobile */
             }
             .floating-counter-button {
-                width: 100%; /* Fill parent container's width */
-                aspect-ratio: 1 / 1; /* Make it a square based on its width */
-                border-radius: 0.6rem; /* Adjusted border-radius for mobile */
+                width: 40px; /* Fixed width for circular button on mobile */
+                height: 40px; /* Fixed height for circular button on mobile */
+                border-radius: 50%; /* Make it a circle */
             }
             .floating-counter-button::before {
                 top: -1px; /* Adjusted border thickness for mobile */
@@ -744,63 +763,66 @@
         </div>
 
         <h3 class="section-title">TESOROS DE LA BIBLIA</h3>
+        <div class="section-group-wrapper tesoros-section">
+            <div class="input-group">
+                <label for="tema-biblia-nombre">1.</label>
+                <input type="text" id="tema-biblia-nombre" name="tema-biblia-nombre" class="name-input" placeholder="A cargo de">
+                <input type="text" id="tema-biblia-duracion" name="tema-biblia-duracion" class="duration-input-block duration-input-short" placeholder="Duración">
+            </div>
 
-        <div class="input-group">
-            <label for="tema-biblia-nombre">1.</label>
-            <input type="text" id="tema-biblia-nombre" name="tema-biblia-nombre" class="name-input" placeholder="A cargo de">
-            <input type="text" id="tema-biblia-duracion" name="tema-biblia-duracion" class="duration-input-block duration-input-short" placeholder="Duración">
-        </div>
+            <div class="input-group">
+                <label for="perlas-nombre">2.</label>
+                <input type="text" id="perlas-nombre" name="perlas-nombre" class="name-input" placeholder="A cargo de">
+                <input type="text" id="perlas-duracion" name="perlas-duracion" class="duration-input-block duration-input-very-short" placeholder="Duración">
+            </div>
 
-        <div class="input-group">
-            <label for="perlas-nombre">2.</label>
-            <input type="text" id="perlas-nombre" name="perlas-nombre" class="name-input" placeholder="A cargo de">
-            <input type="text" id="perlas-duracion" name="perlas-duracion" class="duration-input-block duration-input-very-short" placeholder="Duración">
-        </div>
-
-        <div class="input-group">
-            <label for="lectura-biblia-nombre">3.</label>
-            <input type="text" id="lectura-biblia-nombre" name="lectura-biblia-nombre" class="name-input" placeholder="A cargo de">
-            <input type="text" id="lectura-biblia-duracion" name="lectura-biblia-duracion" class="duration-input-block duration-input-long" placeholder="Duración">
+            <div class="input-group">
+                <label for="lectura-biblia-nombre">3.</label>
+                <input type="text" id="lectura-biblia-nombre" name="lectura-biblia-nombre" class="name-input" placeholder="A cargo de">
+                <input type="text" id="lectura-biblia-duracion" name="lectura-biblia-duracion" class="duration-input-block duration-input-long" placeholder="Duración">
+            </div>
         </div>
 
         <h3 class="section-title" id="seamos-mejores-maestros-title">SEAMOS MEJORES MAESTROS</h3>
+        <div class="section-group-wrapper seamos-section">
+            <div class="input-group">
+                <label for="primera-conversacion-nombre">4.</label>
+                <input type="text" id="primera-conversacion-nombre" name="primera-conversacion-nombre" class="name-input" placeholder="A cargo de">
+                <input type="text" id="primera-conversacion-duracion" name="primera-conversacion-duracion" class="duration-input-block duration-input-short" placeholder="Duración">
+            </div>
 
-        <div class="input-group">
-            <label for="primera-conversacion-nombre">4.</label>
-            <input type="text" id="primera-conversacion-nombre" name="primera-conversacion-nombre" class="name-input" placeholder="A cargo de">
-            <input type="text" id="primera-conversacion-duracion" name="primera-conversacion-duracion" class="duration-input-block duration-input-short" placeholder="Duración">
-        </div>
+            <div class="input-group">
+                <label for="revisita-nombre">5.</label>
+                <input type="text" id="revisita-nombre" name="revisita-nombre" class="name-input" placeholder="A cargo de">
+                <input type="text" id="revisita-duracion" name="revisita-duracion" class="duration-input-block duration-input-short" placeholder="Duración">
+            </div>
 
-        <div class="input-group">
-            <label for="revisita-nombre">5.</label>
-            <input type="text" id="revisita-nombre" name="revisita-nombre" class="name-input" placeholder="A cargo de">
-            <input type="text" id="revisita-duracion" name="revisita-duracion" class="duration-input-block duration-input-short" placeholder="Duración">
-        </div>
-
-        <div class="input-group">
-            <label for="curso-biblico-nombre">6.</label>
-            <input type="text" id="curso-biblico-nombre" name="curso-biblico-nombre" class="name-input" placeholder="A cargo de">
-            <input type="text" id="curso-biblico-duracion" name="curso-biblico-duracion" class="duration-input-block duration-input-long" placeholder="Duración">
+            <div class="input-group">
+                <label for="curso-biblico-nombre">6.</label>
+                <input type="text" id="curso-biblico-nombre" name="curso-biblico-nombre" class="name-input" placeholder="A cargo de">
+                <input type="text" id="curso-biblico-duracion" name="curso-biblico-duracion" class="duration-input-block duration-input-long" placeholder="Duración">
+            </div>
         </div>
 
         <h3 class="section-title" id="nuestra-vida-cristiana-title">NUESTRA VIDA CRISTIANA</h3>
+        <div class="section-group-wrapper vida-cristiana-section">
+            <div class="input-group">
+                <label for="discurso-nombre">7.</label>
+                <input type="text" id="discurso-nombre" name="discurso-nombre" class="name-input" placeholder="A cargo de">
+                <input type="text" id="discurso-duracion" name="discurso-duracion" class="duration-input-block duration-input-long" placeholder="Duración">
+            </div>
 
-        <div class="input-group">
-            <label for="discurso-nombre">7.</label>
-            <input type="text" id="discurso-nombre" name="discurso-nombre" class="name-input" placeholder="A cargo de">
-            <input type="text" id="discurso-duracion" name="discurso-duracion" class="duration-input-block duration-input-long" placeholder="Duración">
-        </div>
+            <div class="input-group">
+                <label for="necesidades-nombre">8.</label>
+                <input type="text" id="necesidades-nombre" name="necesidades-nombre" class="name-input" placeholder="A cargo de">
+                <input type="text" id="necesidades-duracion" name="necesidades-duracion" class="duration-input-block duration-input-very-long" placeholder="Duración">
+            </div>
 
-        <div class="input-group">
-            <label for="necesidades-nombre">8.</label>
-            <input type="text" id="necesidades-nombre" name="necesidades-nombre" class="name-input" placeholder="A cargo de">
-            <input type="text" id="necesidades-duracion" name="necesidades-duracion" class="duration-input-block duration-input-very-long" placeholder="Duración">
-        </div>
-
-        <div class="input-group">
-            <label for="estudio-biblia-nombre">9.</label>
-            <input type="text" id="estudio-biblia-nombre" name="estudio-biblia-nombre" class="name-input" placeholder="A cargo de">
-            <input type="text" id="estudio-biblia-duracion" name="estudio-biblia-duracion" class="duration-input-block duration-input-very-long" placeholder="Duración">
+            <div class="input-group">
+                <label for="estudio-biblia-nombre">9.</label>
+                <input type="text" id="estudio-biblia-nombre" name="estudio-biblia-nombre" class="name-input" placeholder="A cargo de">
+                <input type="text" id="estudio-biblia-duracion" name="estudio-biblia-duracion" class="duration-input-block duration-input-very-long" placeholder="Duración">
+            </div>
         </div>
 
         <button id="generate-report-button" class="generate-report-button">Generar Informe</button>
